@@ -63,7 +63,7 @@ export default function TodoList() {
     navigate("/login");
   };
 
-  const handleKeyPress = (event) => {
+  const keyPressEnter = (event) => {
     if (event.key === "Enter") {
       addTask();
     }
@@ -84,7 +84,7 @@ export default function TodoList() {
             <p className="label">
               Phuc <br />
               Furniture
-            </p>  
+            </p>
           </div>
           <li>
             <button className="nav-btn active">To-do list</button>
@@ -109,7 +109,7 @@ export default function TodoList() {
                   placeholder="Write your task"
                   value={newTask}
                   onChange={(e) => setNewTask(e.target.value)}
-                  onKeyDown={handleKeyPress}
+                  onKeyDown={keyPressEnter}
                 />
               </div>
               <button id="add-btn" onClick={addTask}>
