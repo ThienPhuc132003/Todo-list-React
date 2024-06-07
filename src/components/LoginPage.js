@@ -15,9 +15,12 @@ export default function LoginPage() {
     if (username === validUsername && password === validPassword) {
       localStorage.setItem("isAuth", "true");
       navigate("/todo");
+    } else if (username === "" || password === "") {
+      document.getElementById("error2").style.display = "block";
+      document.getElementById("error1").style.display = "none";
     } else {
-      document.getElementById("error").style.display = "block";
-      console.log("Error state set to true");
+      document.getElementById("error1").style.display = "block";
+      document.getElementById("error2").style.display = "none";
     }
   };
 
@@ -83,7 +86,8 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <p id="error">Your Username or Password is not correct</p>
+          <p id="error1">Your Username or Password is not correct</p>
+          <p id="error2">Can't leave the space blank</p>
           <button type="submit" className="submit" onClick={handleLogin}>
             Submit
           </button>
