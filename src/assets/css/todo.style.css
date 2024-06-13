@@ -44,11 +44,7 @@
   background-color: #e67300;
 }
 
-h1 {
-  position: relative;
-  text-align: center;
-  padding-top: 20px;
-}
+
 .brand {
   display: flex;
   justify-content: center;
@@ -80,6 +76,12 @@ h1 {
 }
 @media (min-width: 1024px) and (max-width: 1920px) {
 }
+h1 {
+  position: relative;
+  text-align: center;
+  padding-top: 20px;
+}
+
 .todobody {
   height: 100vh;
   background: linear-gradient(60deg, #e6ffff, #009999);
@@ -91,9 +93,7 @@ h1 {
   left: 0;
   right: 0;
 }
-.container {
-  padding: 20px;
-}
+
 .container {
   background-color: aliceblue;
   padding: 20px 20px;

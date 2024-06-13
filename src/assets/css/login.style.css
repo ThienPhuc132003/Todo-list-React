@@ -5,7 +5,10 @@
   box-sizing: border-box;
 }
 
-.off {
+.show {
+  display: block;
+}
+.hide {
   display: none;
 }
 
@@ -45,13 +48,6 @@
 .active {
   background-color: #e67300;
 }
-
-h1 {
-  position: relative;
-  text-align: center;
-  padding-top: 20px;
-}
-
 .brand {
   display: flex;
   justify-content: center;
@@ -64,12 +60,10 @@ h1 {
   font-size: 15px;
   padding: 0 10px;
 }
-
 .logo {
   width: 60px;
   padding: 0 10px;
 }
-
 @media (max-width: 740px) {
   .navigation {
     padding: 0;
@@ -85,6 +79,12 @@ h1 {
 
 @media (min-width: 1024px) and (max-width: 1920px) {
 }
+h1 {
+  position: relative;
+  text-align: center;
+  padding-top: 20px;
+}
+
 
 .loginFormBox {
   display: flex;
@@ -139,11 +139,6 @@ button.submit:hover {
   background-color: #fa9128;
 }
 
-#error1 {
+.error {
   color: red;
-  display: none;
-}
-#error2 {
-  color: red;
-  display: none;
 }

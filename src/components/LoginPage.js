@@ -7,35 +7,34 @@ import userLogo from "../assets/images/userIcon.jpg";
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessageUser, setErrorMessageUser] = useState("");
+  const [errorMessagePass, setErrorMessagePass] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-
+  const users = [
+    { username: "1", password: "1" },
+    { username: "2", password: "2" },
+  ];
   const handleLogin = () => {
-    const validUsername = "1";
-    const validPassword = "1";
-    if (username === validUsername && password === validPassword) {
+    const isValidUser = users.some(
+      (user) => user.username === username && user.password === password
+    );
+    if (isValidUser) {
       localStorage.setItem("isAuth", "true");
       navigate("/todo");
-    } else if (username === "" || password === "") {
-      document.getElementById("error2").style.display = "block";
-      document.getElementById("error1").style.display = "none";
     } else {
-      document.getElementById("error1").style.display = "block";
-      document.getElementById("error2").style.display = "none";
+      setErrorMessage("Invalid username or password");
+    }
+    if (username === "") {
+      setErrorMessageUser("Username cannot be empty");
+    }
+    if (password === "") {
+      setErrorMessagePass("Password cannot be empty");
     }
   };
 
   return (
     <>
-      <meta charSet="utf-8" />
-      <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-      <title>Web phuc</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <link rel="stylesheet" href="../assets/css/login.style.css" />
-      <link rel="icon" href="../assets/logoF1.png" />
-      <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-      />
       <div className="nav-box" />
       <div className="navigation">
         <ul className="btn-box">
@@ -46,7 +45,7 @@ export default function LoginPage() {
               Furniture
             </p>
           </div>
-          <li className="off">
+          <li className="hide">
             <a className="nav-btn" href="todo.html">
               To-do list
             </a>
@@ -75,8 +74,15 @@ export default function LoginPage() {
             name="username"
             placeholder="Username"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => {
+              setUsername(e.target.value);
+              if (e.target.value !== "") {
+                setErrorMessageUser("");
+                setErrorMessage("");
+              }
+            }}
           />
+          <p class="error">{errorMessageUser}</p>
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -84,10 +90,16 @@ export default function LoginPage() {
             name="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              if (e.target.value !== "") {
+                setErrorMessagePass("");
+                setErrorMessage("");
+              }
+            }}
           />
-          <p id="error1">Your Username or Password is not correct</p>
-          <p id="error2">Can't leave the space blank</p>
+          <p class="error">{errorMessagePass}</p>
+          <p class="error">{errorMessage}</p>
           <button type="submit" className="submit" onClick={handleLogin}>
             Submit
           </button>
