@@ -44,7 +44,6 @@
   background-color: #e67300;
 }
 
-
 .brand {
   display: flex;
   justify-content: center;
@@ -129,7 +128,7 @@ h1 {
   border: none;
   outline: none;
   color: white;
-  cursor: pointer;
+  cursor: pointe r;
 }
 #error {
   text-align: center;
@@ -160,6 +159,12 @@ h1 {
   align-items: center;
   cursor: pointer;
 }
+@media (max-width: 740px) {
+  .task {
+    grid-template-columns: 1fr 35vw 1fr 1fr;
+  }
+}
+
 .task:not(:first-child) {
   margin-top: 10px;
 }
@@ -219,12 +224,6 @@ h1 {
   text-decoration: line-through;
   color: rgba(0, 0, 0, 0.39);
   font-style: italic;
-}
-#error {
-  text-align: center;
-  background-color: white;
-  color: #ff8080;
-  margin-top: 24px;
 }
 .save {
   background: #62d82b;

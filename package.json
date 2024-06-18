@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "bcryptjs": "^2.4.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1",
@@ -35,5 +35,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.0.0",
+    "envify": "^4.1.0",
+    "jest": "^27.5.1",
+    "terser": "^5.31.1",
+    "terser-brunch": "^4.1.0",
+    "uglifyify": "^5.0.2"
   }
 }

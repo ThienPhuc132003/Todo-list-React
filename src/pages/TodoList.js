@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/images/logoF1.png";
 import "../assets/css/todo.style.css";
 
-export default function TodoList() {
+function TodoList() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [taskCount, setTaskCount] = useState(0);
@@ -17,62 +17,100 @@ export default function TodoList() {
     }
   }, [navigate]);
 
-  const addTask = () => {
+  const addTask = useCallback(() => {
     const taskName = newTask.trim();
     if (!taskName) {
       setError(true);
+      console.log("Error: Task name cannot be empty");
       return;
     }
     setError(false);
-    setTasks([...tasks, { name: taskName, completed: false, editing: false }]);
+    const updatedTasks = [
+      ...tasks,
+      { name: taskName, completed: false, editing: false },
+    ];
+    setTasks(updatedTasks);
     setTaskCount(taskCount + 1);
     setNewTask("");
-  };
+    console.log("Task added:", taskName);
+    console.log("Updated tasks:", updatedTasks);
+  }, [newTask, tasks, taskCount]);
 
-  const handleTaskChange = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].completed = !updatedTasks[index].completed;
-    setTasks(updatedTasks);
-    setTaskCount(taskCount + (updatedTasks[index].completed ? -1 : 1));
-  };
+  const handleTaskChange = useCallback(
+    (index) => {
+      const updatedTasks = [...tasks];
+      updatedTasks[index].completed = !updatedTasks[index].completed;
+      setTasks(updatedTasks);
+      setTaskCount(taskCount + (updatedTasks[index].completed ? -1 : 1));
+      console.log("Task status changed:", updatedTasks[index]);
+      console.log("Updated tasks:", updatedTasks);
+    },
+    [tasks, taskCount]
+  );
 
-  const handleDeleteTask = (index) => {
-    const updatedTasks = tasks.filter((_, i) => i !== index);
-    const taskToDelete = tasks[index];
-    if (!taskToDelete.completed) {
-      setTaskCount(taskCount - 1);
-    }
-    setTasks(updatedTasks);
-  };
+  const handleDeleteTask = useCallback(
+    (index) => {
+      const taskToDelete = tasks[index];
+      const updatedTasks = tasks.filter((_, i) => i !== index);
+      if (!taskToDelete.completed) {
+        setTaskCount(taskCount - 1);
+      }
+      setTasks(updatedTasks);
+      console.log("Task deleted:", taskToDelete);
+      console.log("Updated tasks:", updatedTasks);
+    },
+    [tasks, taskCount]
+  );
 
-  const handleEditTask = (index, newName) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].name = newName;
-    updatedTasks[index].editing = false;
-    setTasks(updatedTasks);
-  };
+  const handleEditTask = useCallback(
+    (index, newName) => {
+      const updatedTasks = [...tasks];
+      updatedTasks[index].name = newName;
+      updatedTasks[index].editing = false;
+      setTasks(updatedTasks);
+      console.log("Task edited:", updatedTasks[index]);
+      console.log("Updated tasks:", updatedTasks);
+    },
+    [tasks]
+  );
 
-  const toggleEditing = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].editing = !updatedTasks[index].editing;
-    setTasks(updatedTasks);
-  };
+  const toggleEditing = useCallback(
+    (index) => {
+      const updatedTasks = [...tasks];
+      updatedTasks[index].editing = !updatedTasks[index].editing;
+      setTasks(updatedTasks);
+      console.log("Task editing toggled:", updatedTasks[index]);
+      console.log("Updated tasks:", updatedTasks);
+    },
+    [tasks]
+  );
 
-  const handleLogout = () => {
+  const saveTask = useCallback(
+    (index, newName) => {
+      const updatedTasks = [...tasks];
+      updatedTasks[index].name = newName;
+      updatedTasks[index].editing = false;
+      setTasks(updatedTasks);
+      console.log("Task saved:", updatedTasks[index]);
+      console.log("Updated tasks:", updatedTasks);
+    },
+    [tasks]
+  );
+
+  const handleLogout = useCallback(() => {
     localStorage.setItem("isAuth", "false");
     navigate("/login");
-  };
+    console.log("User logged out");
+  }, [navigate]);
 
-  const keyPressEnter = (event) => {
-    if (event.key === "Enter") {
-      addTask();
-    }
-  };
-
-  const handleSaveTask = (index, newName) => {
-    handleEditTask(index, newName);
-    toggleEditing(index);
-  };
+  const handleKeyPress = useCallback(
+    (event) => {
+      if (event.key === "Enter") {
+        addTask();
+      }
+    },
+    [addTask]
+  );
 
   return (
     <div className="App">
@@ -109,7 +147,7 @@ export default function TodoList() {
                   placeholder="Write your task"
                   value={newTask}
                   onChange={(e) => setNewTask(e.target.value)}
-                  onKeyDown={keyPressEnter}
+                  onKeyPress={handleKeyPress}
                 />
               </div>
               <button id="add-btn" onClick={addTask}>
@@ -136,7 +174,7 @@ export default function TodoList() {
                       type="text"
                       className="edit-input"
                       defaultValue={task.name}
-                      onBlur={(e) => handleSaveTask(index, e.target.value)}
+                      onBlur={(e) => saveTask(index, e.target.value)}
                     />
                   ) : (
                     <span
@@ -173,3 +211,5 @@ export default function TodoList() {
     </div>
   );
 }
+
+export default React.memo(TodoList);
