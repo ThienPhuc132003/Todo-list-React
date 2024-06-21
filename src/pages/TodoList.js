@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/images/logoF1.png";
 import "../assets/css/todo.style.css";
+import { checkAuth, setAuth } from "../utils/Auth";
 
 function TodoList() {
   const [tasks, setTasks] = useState([]);
@@ -11,8 +12,7 @@ function TodoList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const isAuth = localStorage.getItem("isAuth") === "true";
-    if (!isAuth) {
+    if (!checkAuth()) {
       navigate("/login");
     }
   }, [navigate]);
@@ -27,7 +27,12 @@ function TodoList() {
     setError(false);
     const updatedTasks = [
       ...tasks,
-      { name: taskName, completed: false, editing: false },
+      {
+        name: taskName,
+        completed: false,
+        editing: false,
+        editedName: taskName,
+      },
     ];
     setTasks(updatedTasks);
     setTaskCount(taskCount + 1);
@@ -63,32 +68,27 @@ function TodoList() {
   );
 
   const handleEditTask = useCallback(
-    (index, newName) => {
-      const updatedTasks = [...tasks];
-      updatedTasks[index].name = newName;
-      updatedTasks[index].editing = false;
-      setTasks(updatedTasks);
-      console.log("Task edited:", updatedTasks[index]);
-      console.log("Updated tasks:", updatedTasks);
-    },
-    [tasks]
-  );
-
-  const toggleEditing = useCallback(
     (index) => {
       const updatedTasks = [...tasks];
-      updatedTasks[index].editing = !updatedTasks[index].editing;
+      updatedTasks[index].editing = true;
       setTasks(updatedTasks);
-      console.log("Task editing toggled:", updatedTasks[index]);
+      console.log("Task editing:", updatedTasks[index]);
       console.log("Updated tasks:", updatedTasks);
     },
     [tasks]
   );
 
-  const saveTask = useCallback(
-    (index, newName) => {
+  const handleSaveTask = useCallback(
+    (index) => {
       const updatedTasks = [...tasks];
-      updatedTasks[index].name = newName;
+      const editedName = updatedTasks[index].editedName.trim();
+      if (!editedName) {
+        setError(true);
+        console.log("Error: Task name cannot be empty");
+        return;
+      }
+      setError(false);
+      updatedTasks[index].name = editedName;
       updatedTasks[index].editing = false;
       setTasks(updatedTasks);
       console.log("Task saved:", updatedTasks[index]);
@@ -97,10 +97,18 @@ function TodoList() {
     [tasks]
   );
 
+  const handleTaskNameChange = useCallback(
+    (index, newName) => {
+      const updatedTasks = [...tasks];
+      updatedTasks[index].editedName = newName;
+      setTasks(updatedTasks);
+    },
+    [tasks]
+  );
+
   const handleLogout = useCallback(() => {
-    localStorage.setItem("isAuth", "false");
+    setAuth(false); // Log out the user
     navigate("/login");
-    console.log("User logged out");
   }, [navigate]);
 
   const handleKeyPress = useCallback(
@@ -170,31 +178,39 @@ function TodoList() {
                     onChange={() => handleTaskChange(index)}
                   />
                   {task.editing ? (
-                    <input
-                      type="text"
-                      className="edit-input"
-                      defaultValue={task.name}
-                      onBlur={(e) => saveTask(index, e.target.value)}
-                    />
+                    <>
+                      <input
+                        type="text"
+                        className="edit-input"
+                        value={task.editedName}
+                        onChange={(e) =>
+                          handleTaskNameChange(index, e.target.value)
+                        }
+                      />
+                      <button
+                        className="save"
+                        onClick={() => handleSaveTask(index)}
+                      >
+                        <i className="fa-solid fa-save"></i>
+                      </button>
+                    </>
                   ) : (
-                    <span
-                      className={
-                        task.completed ? "taskname completed" : "taskname"
-                      }
-                    >
-                      {task.name}
-                    </span>
+                    <>
+                      <span
+                        className={
+                          task.completed ? "taskname completed" : "taskname"
+                        }
+                      >
+                        {task.name}
+                      </span>
+                      <button
+                        className="edit"
+                        onClick={() => handleEditTask(index)}
+                      >
+                        <i className="fa-solid fa-pen-to-square"></i>
+                      </button>
+                    </>
                   )}
-                  <button
-                    className={`edit ${task.editing ? "save" : ""}`}
-                    onClick={() => toggleEditing(index)}
-                  >
-                    <i
-                      className={`fa-solid ${
-                        task.editing ? "fa-save" : "fa-pen-to-square"
-                      }`}
-                    ></i>
-                  </button>
                   <button
                     className="delete"
                     onClick={() => handleDeleteTask(index)}

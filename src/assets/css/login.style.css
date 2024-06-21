@@ -85,7 +85,6 @@ h1 {
   padding-top: 20px;
 }
 
-
 .loginFormBox {
   display: flex;
   justify-content: center;
@@ -119,13 +118,16 @@ label {
   margin-bottom: 5px;
 }
 
-input[type="text"],
-input[type="password"] {
+.correct-border {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
-
+.error-border {
+  padding: 10px;
+  border: 1px solid red;
+  border-radius: 5px;
+}
 button.submit {
   background-color: #ff9933;
   color: white;
