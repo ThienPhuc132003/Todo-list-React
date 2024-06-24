@@ -209,7 +209,7 @@ h1 {
   border-radius: 20%;
   border: none;
   cursor: pointer;
-  outline: nee;
+  outline: none;
 }
 .edit-input {
   padding: 8px;
