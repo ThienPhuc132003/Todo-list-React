@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/images/logoF1.png";
 import "../assets/css/todo.style.css";
-import { checkAuth, setAuth } from "../utils/Auth";
+import { setAuth } from "../utils/Auth";
 
 function TodoList() {
   const [tasks, setTasks] = useState([]);
@@ -10,12 +10,6 @@ function TodoList() {
   const [taskCount, setTaskCount] = useState(0);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!checkAuth()) {
-      navigate("/login");
-    }
-  }, [navigate]);
 
   const addTask = useCallback(() => {
     const taskName = newTask.trim();

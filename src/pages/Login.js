@@ -3,8 +3,9 @@ import React, { useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/css/login.style.css";
 import userLogo from "../assets/images/userIcon.jpg";
-import logo from "../assets/images/logoF1.png";
-import { setAuth } from "../utils/Auth"; // Import the setAuth function
+import { setAuth } from "../utils/Auth";
+import NavbarLogin from "../components/NavbarLogin";
+import UsernameInput from "../components/UsernameInput";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
@@ -46,8 +47,8 @@ function LoginPage() {
     );
 
     if (isValidUser) {
-      setAuth(true); // Set auth status using the utility function
-      navigate("/todo");
+      setAuth(true);
+      navigate("/");
     } else {
       setErrorMessages({ login: "Invalid username or password" });
     }
@@ -95,21 +96,26 @@ function LoginPage() {
     }));
   };
 
-  return (
-    <div className="App">
-      <div className="nav-box" />
-      <div className="navigation">
-        <ul className="btn-box">
-          <div className="brand">
-            <img src={logo} alt="logo" className="logo" />
-            <p className="label">
-              Phuc <br />
-              Furniture
-            </p>
-          </div>
-        </ul>
-      </div>
+  const handleUsernameFocus = () => {
+    if (username === "") {
+      setErrorMessages((prevErrors) => ({
+        ...prevErrors,
+        username: "Username cannot be empty",
+      }));
+    }
+  };
+  const handlePasswordFocus = () => {
+    if (password === "") {
+      setErrorMessages((prevErrors) => ({
+        ...prevErrors,
+        password: "Password cannot be empty",
+      }));
+    }
+  };
 
+  return (
+    <>
+      <NavbarLogin />
       <h1>Login form</h1>
       <div className="loginFormBox">
         <div id="loginForm" className="loginForm">
@@ -127,6 +133,7 @@ function LoginPage() {
             value={username}
             onChange={handleUsernameChange}
             onBlur={handleUsernameBlur}
+            onFocus={handleUsernameFocus}
             className={
               errorMessages.username || errorMessages.login
                 ? "error-border"
@@ -143,6 +150,7 @@ function LoginPage() {
             value={password}
             onChange={handlePasswordChange}
             onBlur={handlePasswordBlur}
+            onFocus={handlePasswordFocus}
             className={
               errorMessages.password || errorMessages.login
                 ? "error-border"
@@ -156,7 +164,7 @@ function LoginPage() {
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

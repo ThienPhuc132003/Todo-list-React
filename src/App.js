@@ -1,5 +1,10 @@
 import React, { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import PrivateRoutes from "./route/PrivateRoutes";
 
 const TodoList = lazy(() => import("./pages/TodoList"));
@@ -12,7 +17,8 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<PrivateRoutes />}>
-            <Route path="/todo" element={<TodoList />} exact />
+            <Route index element={<Navigate to="/todo" />} />
+            <Route path="todo" element={<TodoList />} />
           </Route>
         </Routes>
       </Suspense>
