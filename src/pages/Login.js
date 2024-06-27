@@ -1,11 +1,13 @@
 // src/pages/LoginPage.js
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/css/login.style.css";
 import userLogo from "../assets/images/userIcon.jpg";
 import { setAuth } from "../utils/Auth";
 import NavbarLogin from "../components/NavbarLogin";
-import UsernameInput from "../components/UsernameInput";
+const UsernameInput = lazy(() => import("../components/UsernameInput"));
+const PasswordInput = lazy(() => import("../components/PasswordInput"));
+const SubmitLogin = lazy(() => import("../components/SubmitLogin"));
 
 function LoginPage() {
   const [username, setUsername] = useState("");
@@ -124,44 +126,22 @@ function LoginPage() {
               <img src={userLogo} alt="User" className="userImage" />
             </div>
           </div>
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Username"
-            value={username}
-            onChange={handleUsernameChange}
-            onBlur={handleUsernameBlur}
-            onFocus={handleUsernameFocus}
-            className={
-              errorMessages.username || errorMessages.login
-                ? "error-border"
-                : "correct-border"
-            }
+          <UsernameInput
+            username={username}
+            errorMessages={errorMessages}
+            handleUsernameChange={handleUsernameChange}
+            handleUsernameBlur={handleUsernameBlur}
+            handleUsernameFocus={handleUsernameFocus}
           />
-          <p className="error">{errorMessages.username}</p>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Password"
-            value={password}
-            onChange={handlePasswordChange}
-            onBlur={handlePasswordBlur}
-            onFocus={handlePasswordFocus}
-            className={
-              errorMessages.password || errorMessages.login
-                ? "error-border"
-                : "correct-border"
-            }
+          <PasswordInput
+            password={password}
+            errorMessages={errorMessages}
+            handlePasswordChange={handlePasswordChange}
+            handlePasswordBlur={handlePasswordBlur}
+            handlePasswordFocus={handlePasswordFocus}
           />
-          <p className="error">{errorMessages.password}</p>
           <p className="error">{errorMessages.login}</p>
-          <button type="submit" className="submit" onClick={handleLogin}>
-            Submit
-          </button>
+          <SubmitLogin handleLogin={handleLogin} />
         </div>
       </div>
     </>

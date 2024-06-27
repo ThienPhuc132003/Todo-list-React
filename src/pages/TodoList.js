@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/images/logoF1.png";
+
 import "../assets/css/todo.style.css";
 import { setAuth } from "../utils/Auth";
+import NavbarTodo from "../components/NavbarTodo";
 
 function TodoList() {
   const [tasks, setTasks] = useState([]);
@@ -117,27 +118,8 @@ function TodoList() {
   return (
     <div className="App">
       <div className="nav-box" />
-      <div className="navigation">
-        <ul className="btn-box">
-          <div className="brand">
-            <img src={logo} alt="logo" className="logo" />
-            <p className="label">
-              Phuc <br />
-              Furniture
-            </p>
-          </div>
-          <li>
-            <button className="nav-btn active">To-do list</button>
-          </li>
-        </ul>
-        <ul className="btn-box">
-          <li id="logout-btn">
-            <button className="nav-btn" onClick={handleLogout}>
-              Logout
-            </button>
-          </li>
-        </ul>
-      </div>
+      <NavbarTodo handleLogout={handleLogout} />
+
       <div className="todobody">
         <div className="todo">
           <h1 style={{ color: "white" }}>To-do list</h1>

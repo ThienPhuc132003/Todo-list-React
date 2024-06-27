@@ -1,15 +1,16 @@
-// src/components/UserInput.js
+// src/components/UsernameInput.js
 import React from "react";
 
-const UserInput = ({
+function UsernameInput({
   username,
+  errorMessages,
   handleUsernameChange,
   handleUsernameBlur,
-  handleUsernameFocus,
-  errorMessages,
-}) => {
+  handleUsernameFocus
+}) {
   return (
     <>
+      <label htmlFor="username">Username</label>
       <input
         type="text"
         id="username"
@@ -25,8 +26,9 @@ const UserInput = ({
             : "correct-border"
         }
       />
+      <p className="error">{errorMessages.username}</p>
     </>
   );
-};
+}
 
-export default UserInput;
+export default React.memo(UsernameInput);
