@@ -1,10 +1,12 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, lazy } from "react";
 import { useNavigate } from "react-router-dom";
-
 import "../assets/css/todo.style.css";
 import { setAuth } from "../utils/Auth";
-import NavbarTodo from "../components/NavbarTodo";
 
+const NavbarTodo = lazy(() => import("../components/NavbarTodo"));
+const Task = lazy(() => import("../components/Task"));
+const AddButton = lazy(() => import("../components/AddButton"));
+const TaskInput = lazy(() => import("../components/TaskInput"));
 function TodoList() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
@@ -125,18 +127,12 @@ function TodoList() {
           <h1 style={{ color: "white" }}>To-do list</h1>
           <div className="container">
             <div id="wrapper">
-              <div id="task-place">
-                <input
-                  type="text"
-                  placeholder="Write your task"
-                  value={newTask}
-                  onChange={(e) => setNewTask(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                />
-              </div>
-              <button id="add-btn" onClick={addTask}>
-                Add
-              </button>
+              <TaskInput
+                newTask={newTask}
+                setNewTask={setNewTask}
+                handleKeyPress={handleKeyPress}
+              />
+              <AddButton addTask={addTask} />
             </div>
             <div id="tasks">
               <p id="pending-tTasks">
@@ -146,54 +142,16 @@ function TodoList() {
                 </b>
               </p>
               {tasks.map((task, index) => (
-                <div key={index} className="task">
-                  <input
-                    type="checkbox"
-                    className="task-check"
-                    checked={task.completed}
-                    onChange={() => handleTaskChange(index)}
-                  />
-                  {task.editing ? (
-                    <>
-                      <input
-                        type="text"
-                        className="edit-input"
-                        value={task.editedName}
-                        onChange={(e) =>
-                          handleTaskNameChange(index, e.target.value)
-                        }
-                      />
-                      <button
-                        className="save"
-                        onClick={() => handleSaveTask(index)}
-                      >
-                        <i className="fa-solid fa-save"></i>
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <span
-                        className={
-                          task.completed ? "taskname completed" : "taskname"
-                        }
-                      >
-                        {task.name}
-                      </span>
-                      <button
-                        className="edit"
-                        onClick={() => handleEditTask(index)}
-                      >
-                        <i className="fa-solid fa-pen-to-square"></i>
-                      </button>
-                    </>
-                  )}
-                  <button
-                    className="delete"
-                    onClick={() => handleDeleteTask(index)}
-                  >
-                    <i className="fa-solid fa-square-minus"></i>
-                  </button>
-                </div>
+                <Task
+                  key={index}
+                  task={task}
+                  index={index}
+                  handleTaskChange={handleTaskChange}
+                  handleTaskNameChange={handleTaskNameChange}
+                  handleSaveTask={handleSaveTask}
+                  handleEditTask={handleEditTask}
+                  handleDeleteTask={handleDeleteTask}
+                />
               ))}
             </div>
             {error && <p id="error">Can't leave the space empty</p>}
