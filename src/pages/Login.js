@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import "../assets/css/login.style.css";
 import userLogo from "../assets/images/userIcon.jpg";
 import { setAuth } from "../utils/Auth";
-import NavbarLogin from "../components/NavbarLogin";
+import Baselayout from "../components/layout/Baselayout";
+import Button from "../components/Button";
 const UsernameInput = lazy(() => import("../components/UsernameInput"));
 const PasswordInput = lazy(() => import("../components/PasswordInput"));
-const SubmitLogin = lazy(() => import("../components/SubmitLogin"));
 
 function LoginPage() {
   const [username, setUsername] = useState("");
@@ -117,33 +117,36 @@ function LoginPage() {
 
   return (
     <>
-      <NavbarLogin />
-      <h1>Login form</h1>
-      <div className="loginFormBox">
-        <div id="loginForm" className="loginForm">
-          <div className="userImageBox">
-            <div>
-              <img src={userLogo} alt="User" className="userImage" />
+      <Baselayout showLogin={false}>
+        <h1>Login form</h1>
+        <div className="loginFormBox">
+          <div id="loginForm" className="loginForm">
+            <div className="userImageBox">
+              <div>
+                <img src={userLogo} alt="User" className="userImage" />
+              </div>
             </div>
+            <UsernameInput
+              username={username}
+              errorMessages={errorMessages}
+              handleUsernameChange={handleUsernameChange}
+              handleUsernameBlur={handleUsernameBlur}
+              handleUsernameFocus={handleUsernameFocus}
+            />
+            <PasswordInput
+              password={password}
+              errorMessages={errorMessages}
+              handlePasswordChange={handlePasswordChange}
+              handlePasswordBlur={handlePasswordBlur}
+              handlePasswordFocus={handlePasswordFocus}
+            />
+            <p className="error">{errorMessages.login}</p>
+            <Button className="submit" handleActive={handleLogin}>
+              Submit
+            </Button>
           </div>
-          <UsernameInput
-            username={username}
-            errorMessages={errorMessages}
-            handleUsernameChange={handleUsernameChange}
-            handleUsernameBlur={handleUsernameBlur}
-            handleUsernameFocus={handleUsernameFocus}
-          />
-          <PasswordInput
-            password={password}
-            errorMessages={errorMessages}
-            handlePasswordChange={handlePasswordChange}
-            handlePasswordBlur={handlePasswordBlur}
-            handlePasswordFocus={handlePasswordFocus}
-          />
-          <p className="error">{errorMessages.login}</p>
-          <SubmitLogin handleLogin={handleLogin} />
         </div>
-      </div>
+      </Baselayout>
     </>
   );
 }

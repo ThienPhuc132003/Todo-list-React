@@ -2,10 +2,9 @@ import React, { useState, useCallback, lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/css/todo.style.css";
 import { setAuth } from "../utils/Auth";
-
-const NavbarTodo = lazy(() => import("../components/NavbarTodo"));
+import Baselayout from "../components/layout/Baselayout";
+import Button from "../components/Button";
 const Task = lazy(() => import("../components/Task"));
-const AddButton = lazy(() => import("../components/AddButton"));
 const TaskInput = lazy(() => import("../components/TaskInput"));
 function TodoList() {
   const [tasks, setTasks] = useState([]);
@@ -119,45 +118,47 @@ function TodoList() {
 
   return (
     <div className="App">
-      <div className="nav-box" />
-      <NavbarTodo handleLogout={handleLogout} />
-
-      <div className="todobody">
-        <div className="todo">
-          <h1 style={{ color: "white" }}>To-do list</h1>
-          <div className="container">
-            <div id="wrapper">
-              <TaskInput
-                newTask={newTask}
-                setNewTask={setNewTask}
-                handleKeyPress={handleKeyPress}
-              />
-              <AddButton addTask={addTask} />
-            </div>
-            <div id="tasks">
-              <p id="pending-tTasks">
-                <b>
-                  <span className="count-value">{taskCount}</span> task need to
-                  do
-                </b>
-              </p>
-              {tasks.map((task, index) => (
-                <Task
-                  key={index}
-                  task={task}
-                  index={index}
-                  handleTaskChange={handleTaskChange}
-                  handleTaskNameChange={handleTaskNameChange}
-                  handleSaveTask={handleSaveTask}
-                  handleEditTask={handleEditTask}
-                  handleDeleteTask={handleDeleteTask}
+      <Baselayout showLogin handleLogout={handleLogout}>
+        <div className="nav-box" />
+        <div className="todobody">
+          <div className="todo">
+            <h1 style={{ color: "white" }}>To-do list</h1>
+            <div className="container">
+              <div id="wrapper">
+                <TaskInput
+                  newTask={newTask}
+                  setNewTask={setNewTask}
+                  handleKeyPress={handleKeyPress}
                 />
-              ))}
+                <Button id="add-btn" handleActive={addTask}>
+                  Add
+                </Button>
+              </div>
+              <div id="tasks">
+                <p id="pending-tTasks">
+                  <b>
+                    <span className="count-value">{taskCount}</span> task need
+                    to do
+                  </b>
+                </p>
+                {tasks.map((task, index) => (
+                  <Task
+                    key={index}
+                    task={task}
+                    index={index}
+                    handleTaskChange={handleTaskChange}
+                    handleTaskNameChange={handleTaskNameChange}
+                    handleSaveTask={handleSaveTask}
+                    handleEditTask={handleEditTask}
+                    handleDeleteTask={handleDeleteTask}
+                  />
+                ))}
+              </div>
+              {error && <p id="error">Can't leave the space empty</p>}
             </div>
-            {error && <p id="error">Can't leave the space empty</p>}
           </div>
         </div>
-      </div>
+      </Baselayout>
     </div>
   );
 }

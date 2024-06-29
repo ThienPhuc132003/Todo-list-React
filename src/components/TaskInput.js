@@ -8,7 +8,7 @@ function TaskInput({ newTask, setNewTask, handleKeyPress }) {
           placeholder="Write your task"
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyPress}
         />
       </div>
     </>
