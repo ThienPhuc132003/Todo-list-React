@@ -2,7 +2,8 @@ import React from "react";
 import Navbar from "../Navbar";
 import PropTypes from "prop-types";
 
-function Baselayout({ showLogin, handleLogout, children }) {
+function Baselayout(props) {
+  const { showLogin, handleLogout, children } = props;
   return (
     <>
       <Navbar showLogin={showLogin} handleLogout={handleLogout} />

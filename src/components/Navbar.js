@@ -2,7 +2,8 @@ import React from "react";
 import logo from "../assets/images/logoF1.png";
 // import PropTypes from "prop-types";
 
-function Navbar({ showLogin, handleLogout }) {
+function Navbar(props) {
+  const { showLogin, handleLogout } = props;
   return (
     <>
       <div className="nav-box" />
@@ -35,4 +36,4 @@ function Navbar({ showLogin, handleLogout }) {
   );
 }
 
-export default Navbar;
+export default React.memo(Navbar);

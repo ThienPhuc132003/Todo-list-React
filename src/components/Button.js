@@ -1,9 +1,10 @@
-// Assuming this is the Button component's structure
-function Button({ handleActive, children, ...props }) {
+import React  from "react";
+function Button(props) {
+  const { handleActive, children, ...rest } = props;
   return (
-    <button onClick={handleActive} {...props}>
+    <button onClick={handleActive} {...rest}>
       {children}
     </button>
   );
 }
-export default Button;
+export default React.memo(Button);

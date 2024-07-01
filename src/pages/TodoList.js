@@ -4,8 +4,8 @@ import "../assets/css/todo.style.css";
 import { setAuth } from "../utils/Auth";
 import Baselayout from "../components/layout/Baselayout";
 import Button from "../components/Button";
+import InputField from "../components/InputField";
 const Task = lazy(() => import("../components/Task"));
-const TaskInput = lazy(() => import("../components/TaskInput"));
 function TodoList() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
@@ -107,7 +107,7 @@ function TodoList() {
     navigate("/login");
   }, [navigate]);
 
-  const handleKeyPress = useCallback(
+  const handleOnKeyDown = useCallback(
     (event) => {
       if (event.key === "Enter") {
         addTask();
@@ -125,11 +125,16 @@ function TodoList() {
             <h1 style={{ color: "white" }}>To-do list</h1>
             <div className="container">
               <div id="wrapper">
-                <TaskInput
-                  newTask={newTask}
-                  setNewTask={setNewTask}
-                  handleKeyPress={handleKeyPress}
-                />
+                <div id="task-place">
+                  <InputField
+                    type="text"
+                    placeholder="Write your task"
+                    value={newTask}
+                    setNewTask={setNewTask}
+                    onKeyDown={handleOnKeyDown}
+                    onChange={(e) => setNewTask(e.target.value)}
+                  />
+                </div>
                 <Button id="add-btn" handleActive={addTask}>
                   Add
                 </Button>

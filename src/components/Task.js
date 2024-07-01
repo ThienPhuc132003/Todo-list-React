@@ -1,4 +1,5 @@
 import React from "react";
+import InputField from "./InputField";
 function Task({
   task,
   index,
@@ -19,7 +20,7 @@ function Task({
         />
         {task.editing ? (
           <>
-            <input
+            <InputField
               type="text"
               className="edit-input"
               value={task.editedName}
