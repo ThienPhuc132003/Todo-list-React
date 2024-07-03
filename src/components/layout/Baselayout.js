@@ -3,7 +3,7 @@ import Navbar from "../Navbar";
 import PropTypes from "prop-types";
 
 function Baselayout(props) {
-  const { showLogin, handleLogout, children } = props;
+  const { showLogin = false, handleLogout = () => {}, children = null } = props;
   return (
     <>
       <Navbar showLogin={showLogin} handleLogout={handleLogout} />
@@ -12,15 +12,9 @@ function Baselayout(props) {
   );
 }
 
+export default React.memo(Baselayout);
 Baselayout.propTypes = {
   showLogin: PropTypes.bool,
   handleLogout: PropTypes.func,
   children: PropTypes.node,
 };
-
-Baselayout.defaultProps = {
-  showLogin: false,
-  handleLogout: () => {},
-};
-
-export default React.memo(Baselayout);

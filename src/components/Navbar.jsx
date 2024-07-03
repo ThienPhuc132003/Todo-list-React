@@ -1,9 +1,10 @@
 import React from "react";
 import logo from "../assets/images/logoF1.png";
+import Proptypes from "prop-types";
 // import PropTypes from "prop-types";
 
 function Navbar(props) {
-  const { showLogin, handleLogout } = props;
+  const { showLogin = false, handleLogout = () => {} } = props;
   return (
     <>
       <div className="nav-box" />
@@ -37,3 +38,8 @@ function Navbar(props) {
 }
 
 export default React.memo(Navbar);
+
+Navbar.propTypes = {
+  showLogin: Proptypes.bool,
+  handleLogout: Proptypes.func,
+};

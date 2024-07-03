@@ -1,5 +1,6 @@
 // src/pages/LoginPage.js
-import React, { useState, useCallback, useMemo } from "react";
+
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/css/login.style.css";
 import userLogo from "../assets/images/userIcon.jpg";
@@ -7,20 +8,30 @@ import { setAuth } from "../utils/Auth";
 import Baselayout from "../components/layout/Baselayout";
 import Button from "../components/Button";
 import InputField from "../components/InputField";
-
+import userApi from "../network/userApi";
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessages, setErrorMessages] = useState({});
+  const[users,setUsers]=useState();
   const navigate = useNavigate();
 
-  const users = useMemo(
-    () => [
-      { username: "1", password: "1" },
-      { username: "2", password: "2" },
-    ],
-    []
-  );
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userList = await userApi.getAll();
+      setUsers(userList);
+    };
+    fetchUser();
+  }, []);
+  // const users = useMemo(
+  //   () => [
+  //     { username: "1", password: "1" },
+  //     { username: "2", password: "2" },
+  //   ],
+  //   []
+  // );
+
+  setAuth(false);
 
   const validateFields = useCallback(() => {
     const errors = {};
@@ -105,6 +116,7 @@ function LoginPage() {
       }));
     }
   };
+
   const handlePasswordFocus = () => {
     if (password === "") {
       setErrorMessages((prevErrors) => ({
@@ -131,7 +143,7 @@ function LoginPage() {
               id="username"
               name="username"
               placeholder="Username"
-              handleValue={username}
+              value={username}
               errorMessages={errorMessages}
               onBlur={handleUsernameBlur}
               onFocus={handleUsernameFocus}
@@ -143,7 +155,7 @@ function LoginPage() {
               }
             />
             <p className="error">{errorMessages.username}</p>
-            <label htmlFor="username">Password</label>
+            <label htmlFor="password">Password</label>
             <InputField
               type="password"
               id="password"
@@ -162,7 +174,7 @@ function LoginPage() {
             />
             <p className="error">{errorMessages.password}</p>
             <p className="error">{errorMessages.login}</p>
-            <Button className="submit" handleActive={handleLogin}>
+            <Button className="submit" onClick={handleLogin}>
               Submit
             </Button>
           </div>

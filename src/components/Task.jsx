@@ -1,13 +1,14 @@
 import React from "react";
 import InputField from "./InputField";
+import Proptypes from "prop-types";
 function Task({
-  task,
-  index,
+  task = {},
+  index = 0,
   handleTaskChange,
   handleTaskNameChange,
   handleSaveTask,
-  handleEditTask,
-  handleDeleteTask,
+  handleEditTask = () => {},
+  handleDeleteTask = () => {},
 }) {
   return (
     <>
@@ -50,3 +51,13 @@ function Task({
   );
 }
 export default React.memo(Task);
+
+Task.propTypes = {
+  task: Proptypes.object,
+  index: Proptypes.number,
+  handleTaskChange: Proptypes.func,
+  handleTaskNameChange: Proptypes.func,
+  handleSaveTask: Proptypes.func,
+  handleEditTask: Proptypes.func,
+  handleDeleteTask: Proptypes.func,
+};

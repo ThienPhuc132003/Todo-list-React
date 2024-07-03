@@ -130,12 +130,11 @@ function TodoList() {
                     type="text"
                     placeholder="Write your task"
                     value={newTask}
-                    setNewTask={setNewTask}
                     onKeyDown={handleOnKeyDown}
                     onChange={(e) => setNewTask(e.target.value)}
                   />
                 </div>
-                <Button id="add-btn" handleActive={addTask}>
+                <Button id="add-btn" onClick={addTask}>
                   Add
                 </Button>
               </div>
